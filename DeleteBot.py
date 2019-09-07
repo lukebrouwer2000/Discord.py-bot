@@ -1,34 +1,29 @@
 import discord
-import os
 from discord.ext import commands
 
-client = commands.Bot(command_prefix=".")
-
-
-@client.command()
-async def load(ctx, extension):
-    client.load_extension(f'cogs.{extension}')
+client = commands.Bot(command_prefix=".")                                        #  variable name extends to decorators and functions; 
 
 
 @client.event
 async def on_ready():
     """shows the bot's status as online, playing xyz game"""
     await client.change_presence(status=discord.Status.online,
-                                 activity=discord.Game("World of Warcraft: Classic"))
+                                 activity=discord.Game
+                                 ("World of Warcraft: Classic"))
 
-    print('{0.user} is ready for action :)'.format(client))
+    print(f'{client.user.name} is ready for action :)')
 
 
 @client.event
 async def on_member_join(member):
     """adds a welcome message when a new user joins the server"""
-    print(f'{member} has joined a server.')
+    print(f'{member} has joined a server.')                                       #  f strings because .format is outdated
 
 
 @client.event
 async def on_member_remove(member):
     """adds a goodbye message when an existing user leaves the server"""
-    print(f'{member} has left a server.')
+    print(f'{member} has left a server.')                                        #  f strings because .format is outdated
 
 
 @client.command()
@@ -38,7 +33,7 @@ async def ping(ctx):
 
 
 @client.command()
-async def clear(ctx, amount=5000):
+async def clear(ctx, amount=0):                                                 #  change amount to purge size desired
     """clears all messages in chat based on amount=value"""
     await ctx.channel.purge(limit=amount)
 
@@ -48,13 +43,13 @@ async def on_message_delete(message):
     """creates an embed when a message is deleted in the channel """
     client.get_channel(616811413847146498)
 
-    embed = discord.Embed(description=message.content)
+    embed = discord.Embed(description=message.content)                          #  allows attribute of set_author/set_footer
 
     embed.set_author(name=message.author, icon_url=message.author.avatar_url)
 
     embed.set_footer(text=message.channel.name)
 
-    if len(message.content) > 0:
+    if len(message.content) > 0:                                                #  in case message description has nothing
         embed.description = message.content
     else:
         embed.description = 'No message content'
@@ -62,4 +57,4 @@ async def on_message_delete(message):
     await message.channel.send(embed=embed)
 
 
-client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XXM-EA.3Apx0FUPszYcXt6OVXSfjNE3TrQ')
+client.run('insert bot token here')
