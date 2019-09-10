@@ -6,9 +6,8 @@ async def on_message_delete(message):
     embed = discord.Embed()
     embed.set_author(name=message.author, icon_url=message.author.avatar_url)                       # header
     embed.description = message.content  # description
-    embed.set_footer(text='Message seen in '
-                          + message.guild.name + " in "
-                          + message.channel.name + "\n| \nYou've been caught by Vive bot")          # footer
+    embed.set_footer(text=f"Message seen in {message.guild.name} in {message.channel.name} | "
+                              f"\nYou've been caught by Vive bot")                                  # footer
 
     if len(message.content) > 0:                                                                    
         embed.description = message.content                                                         # if length of message > 0
