@@ -12,7 +12,13 @@ Events -
 
 4. on_message_delete - creates an embed when a message is deleted in the channel
 
+5. 
+
 Commands - 
 1. ping - allows user to verify ping associated with discord server
 
 2. clear - clears all messages in chat based on amount=value
+
+3. kick - allows admin users to kick other members while providing reason (includes reason/no-reason handlind)
+
+4. ban - allows admin users to ban other members while providing reason (includes reason/no-reason handlind)
