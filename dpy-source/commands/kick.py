@@ -1,4 +1,5 @@
 @client.command()
+@commands.has_role(role)
 async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none for easy execution; no context
     """allows admin users to kick other members while providing reason"""
     
