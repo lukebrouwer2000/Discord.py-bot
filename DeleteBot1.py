@@ -39,7 +39,7 @@ async def on_message_delete(message):
     allowable_channels = ["general"]
     if str(message.channel) in allowable_channels:
 
-        client.get_channel(620010049422753812)  # post embed in specific channel
+        client.get_channel(ID)  # post embed in specific channel
         embed = discord.Embed()
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)  # header
         embed.description = message.content  # description
@@ -129,8 +129,8 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 #     await member.ban(reason=reason)
 
 
-ident = client.get_guild(616811413268070415)
-client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XXdQKg.we5nzs1rfh8iUDzB74d_IGIyPck')
+ident = client.get_guild(GUILD_ID)
+client.run('TOKEN')
 
 # @client.command()
 # async def clear2(ctx, amount=5000):
