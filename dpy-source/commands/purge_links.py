@@ -1,4 +1,5 @@
 @client.command()
+@commands.has_role(role)
 async def clear2(ctx, amount=5000):
     """clears all links and images"""
     my_channel = ctx.message.channel
