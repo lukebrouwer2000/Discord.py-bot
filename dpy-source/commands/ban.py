@@ -1,4 +1,5 @@
 @client.command()
+@commands.has_role("bigpapa")
 async def ban(ctx, member: discord.Member, *, reason=None):
     """allows admin users to ban other members while providing reason"""
     if reason is None:  # reason = none handling
