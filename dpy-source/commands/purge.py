@@ -1,4 +1,5 @@
 @client.command()
+@commands.has_role(role)
 async def clear(ctx, amount=5000):
     """clears all messages in chat based on amount=value"""
     start_time = time.time()                                                    # execution timer start
