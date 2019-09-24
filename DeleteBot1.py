@@ -36,24 +36,35 @@ async def on_member_remove(member):
 @client.event
 async def on_message_delete(message):
     """creates an embed when a message is deleted in the channel"""
-    allowable_channels = ["general"]
-    if str(message.channel) in allowable_channels:
+    
+    embed = discord.Embed()
+    embed.set_author(name=message.author, icon_url=message.author.avatar_url)  
+    embed.description = message.content  
 
-        client.get_channel(ID)  # post embed in specific channel
-        embed = discord.Embed()
-        embed.set_author(name=message.author, icon_url=message.author.avatar_url)  # header
-        embed.description = message.content  # description
+    embed.set_footer(text=f'Message seen in {message.guild.name} in {message.channel.name} | '
+                        f"\nYou've been caught by Vive bot")
 
-        embed.set_footer(text=f'Message seen in {message.guild.name} in {message.channel.name} | '
-                              f"\nYou've been caught by Vive bot")
+    if len(message.content) > 0:
+        embed.description = message.content
+    else:
+        embed.description = 'No message content'
 
-        if len(message.content) > 0:
-            embed.description = message.content
-        else:
-            embed.description = 'No message content'
+    await message.channel.send(embed=embed)
 
-        await message.channel.send(embed=embed)
 
+@client.command()
+@commands.has_role(role)
+async def create_text_channel(ctx, name):
+    """allows user to create channels on the discord server"""
+    guild = ctx.message.guild
+    await guild.create_text_channel(name)
+    
+# @client.command
+# @commands.has_role(role)
+# async def delete_channel(ctx, channel):
+#     """allows user to delete channels on the discord server"""
+#     guild = ctx.message.guild
+#     await guild.delete_channel(channel)
 
 @client.command()
 async def ping(ctx):
@@ -64,9 +75,10 @@ async def ping(ctx):
 
 
 @client.command()
+@commands.has_role(role)
 async def clear(ctx, amount=5000):
     """clears all messages in chat based on amount=value"""
-    allowable_channels = ["general"]
+    allowable_channels = ["general", "todo"]
     if str(ctx.channel) in allowable_channels:
         start_time = time.time()
         purge_count = await ctx.channel.purge(limit=amount)
@@ -79,6 +91,7 @@ async def clear(ctx, amount=5000):
 
 
 @client.command()
+@commands.has_role(role)
 async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none for easy kicking; no context
     """allows admin users to kick other members while providing reason"""
     if reason is None:  # reason = none handling
@@ -100,6 +113,7 @@ async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none fo
 
 
 @client.command()
+@commands.has_role(role)
 async def ban(ctx, member: discord.Member, *, reason=None):
     """allows admin users to ban other members while providing reason"""
     if reason is None:  # reason = none handling
@@ -129,8 +143,8 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 #     await member.ban(reason=reason)
 
 
-ident = client.get_guild(GUILD_ID)
-client.run('TOKEN')
+ident = client.get_guild(server_id)
+client.run(token)
 
 # @client.command()
 # async def clear2(ctx, amount=5000):
