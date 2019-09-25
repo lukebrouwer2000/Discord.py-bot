@@ -1,5 +1,5 @@
 # Discord.py-bot
-Discord bot made in Python using the rewritten Discord.py wrapper
+Discord bot made in Python using the extensive Discord.py library.
 
 Includes commands and events:
 
@@ -24,3 +24,13 @@ Commands -
 4. ban - allows admin users to ban other members while providing reason (includes reason/no-reason handlind)
 
 5. create_text_channel - allows users with proper permissions to create text channels
+
+
+
+TO:DO
+
+• Add cogs and classes to organize events and commands 
+
+• Finish hosting to ensure bot uptime of 100%
+
+• Refactor execution time module - switch from time to timeit
