@@ -59,12 +59,12 @@ async def ctc(ctx, name):
     await guild.create_text_channel(name)
     await ctx.send('I created a text channel with the name: ' + name)
     
-# @client.command
-# @commands.has_role(role)
-# async def delete_channel(ctx, channel):
-#     """allows user to delete channels on the discord server"""
-#     guild = ctx.message.guild
-#     await guild.delete_channel(channel)
+@client.command()
+@commands.has_role("Admin")
+async def delete(ctx, reason=None):       
+    """allows admin user to delete channels on the discord server"""
+    channel = ctx.channel
+    await channel.delete(reason=reason)
 
 @client.command()
 async def ping(ctx):
