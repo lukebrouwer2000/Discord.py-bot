@@ -1,7 +1,7 @@
 # Discord.py-bot
 Discord bot made in Python using the extensive Discord.py library.
 
-Includes commands and events:
+Includes events and commands
 
 Events - 
 1. on_ready - when the user runs the code, shows the bot's status as online, playing xyz game
@@ -23,7 +23,9 @@ Commands -
 
 4. ban - allows admin users to ban other members while providing reason (includes reason/no-reason handlind)
 
-5. create_text_channel - allows users with proper permissions to create text channels
+5. ctc(create_text_channel) - allows users with proper permissions to create text channels
+
+6. dtc(delete_channel) - allows admin user to delete channel
 
 
 
