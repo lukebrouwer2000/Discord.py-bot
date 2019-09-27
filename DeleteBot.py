@@ -86,6 +86,7 @@ async def ping(ctx):
 
 
 @client.command()
+@commands.is_owner()
 @commands.has_role(role)
 async def clear(ctx, amount=5000):
     """clears all messages in chat based on amount=value"""
@@ -102,7 +103,8 @@ async def clear(ctx, amount=5000):
 
 
 @client.command()
-@commands.has_role(role)
+@commands.is_owner()
+@commands.has_role("Admin")
 async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none for easy kicking; no context
     """allows admin users to kick other members while providing reason"""
     if reason is None:  # reason = none handling
@@ -124,7 +126,8 @@ async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none fo
 
 
 @client.command()
-@commands.has_role(role)
+@commands.is_owner()
+@commands.has_role("Admin")
 async def ban(ctx, member: discord.Member, *, reason=None):
     """allows admin users to ban other members while providing reason"""
     if reason is None:  # reason = none handling
@@ -149,9 +152,6 @@ async def ban(ctx, member: discord.Member, *, reason=None):
         #  await member.ban(reason=reason)
 
 
-# @client.command()
-# async def ban(ctx, member: discord.Member, *, reason=None):  # reason = none for easy banning; no context
-#     await member.ban(reason=reason)
 
 
 ident = client.get_guild(server_id)
