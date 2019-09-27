@@ -66,6 +66,17 @@ async def delete(ctx, reason=None):
     channel = ctx.channel
     await channel.delete(reason=reason)
 
+class MemberRoles(commands.MemberConverter):
+    async def convert(self, ctx, argument):
+        member = await super().convert(ctx, argument)
+        return [role.name for role in member.roles[1:]]
+
+@client.command()
+@commands.has_role("Admin")
+async def roles(ctx, *, roles: MemberRoles):
+    """tells you a member's roles"""
+    await ctx.send('User has the following roles: ' + ', '.join(roles))
+    
 @client.command()
 async def ping(ctx):
     """allows user to verify ping associated with discord server"""
