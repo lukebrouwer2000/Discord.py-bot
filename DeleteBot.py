@@ -51,13 +51,13 @@ async def on_message_delete(message):
 
     await message.channel.send(embed=embed)
 
-
 @client.command()
-@commands.has_role(role)
-async def create_text_channel(ctx, name):
-    """allows user to create channels on the discord server"""
+@commands.has_role("Admin")
+async def ctc(ctx, name):
+    """allows user to create text channels on the discord server"""
     guild = ctx.message.guild
     await guild.create_text_channel(name)
+    await ctx.send('I created a text channel with the name: ' + name)
     
 # @client.command
 # @commands.has_role(role)
