@@ -2,16 +2,18 @@ import discord
 import os
 from discord.ext import commands
 import time
+import asyncio
+import random
+import schedule
 
 client = commands.Bot(command_prefix="!")
-
 
 
 @client.event
 async def on_ready():
     """shows the bot's status as online, playing xyz game"""
     start = time.time()
-    await client.change_presence(status=discord.Status.online, activity=discord.Game("Battlefield IV"))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game("Candy Crush"))
     end = time.time()
     print(f'{client.user.name} is ready for action. Start-up took {end-start} seconds')
 
@@ -19,8 +21,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     """adds a welcome message when a new user joins the server"""
-    for channel in member.guild.channels:
-        if str(channel) == "general":
+    for _ in member.guild.channels:
             print(f'{member} has joined the server.')
             await member.send(f'{member} has joined the server!')
             await member.send_message(f'Welcome to the server!')
@@ -51,6 +52,8 @@ async def on_message_delete(message):
 
     await message.channel.send(embed=embed)
 
+
+
 @client.command()
 @commands.has_role("Admin")
 async def ctc(ctx, name):
@@ -63,8 +66,9 @@ async def ctc(ctx, name):
 @commands.has_role("Admin")
 async def delete(ctx, reason=None):       
     """allows admin user to delete channels on the discord server"""
+
     channel = ctx.channel
-    await channel.delete(reason=reason)
+    await channel.delete(reason=reason) 
 
 class MemberRoles(commands.MemberConverter):
     async def convert(self, ctx, argument):
@@ -76,7 +80,9 @@ class MemberRoles(commands.MemberConverter):
 async def roles(ctx, *, roles: MemberRoles):
     """tells you a member's roles"""
     await ctx.send('User has the following roles: ' + ', '.join(roles))
-    
+
+
+
 @client.command()
 async def ping(ctx):
     """allows user to verify ping associated with discord server"""
@@ -86,20 +92,25 @@ async def ping(ctx):
 
 
 @client.command()
+@commands.has_role("Admin")
 @commands.is_owner()
-@commands.has_role(role)
-async def clear(ctx, amount=5000):
+async def clear(ctx, amount=5000): # default value set to 5k automatically
     """clears all messages in chat based on amount=value"""
-    allowable_channels = ["general", "todo"]
+    allowable_channels = ["general", "todo", "development"]
     if str(ctx.channel) in allowable_channels:
         start_time = time.time()
         purge_count = await ctx.channel.purge(limit=amount)
         end_time = time.time()
 
-        await ctx.channel.send('Deleted {} messages in channel {}'
-                               .format(len(purge_count), ctx.channel.mention))
-        await ctx.channel.send('Purge took {0:0.1f} seconds'
-                               .format(end_time - start_time))
+        await ctx.channel.send(f'Deleted {len(purge_count)} messages in channel {ctx.channel.mention}')
+        await ctx.channel.send(f'Purge took {(end_time - start_time):0.2f} seconds')  # execution time rounded to 2 places, works w/ float
+        message = await ctx.channel.send("While this channel is labeled as NSFW breaking discord's Terms of Services (<https://discordapp.com/terms>) will not be allowed.")
+        await message.pin()
+
+
+
+
+
 
 
 @client.command()
@@ -107,22 +118,17 @@ async def clear(ctx, amount=5000):
 @commands.has_role("Admin")
 async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none for easy kicking; no context
     """allows admin users to kick other members while providing reason"""
-    if reason is None:  # reason = none handling
-        none_embed = discord.Embed()
-        ctx.content = f'Dear {member}, \n You were kicked from the server {ctx.guild.name} because you were a dickhead.'
-        none_embed.description = ctx.content
-        await member.send(embed=none_embed)
+    # reason = none exception handling
+    if reason is None:  
+        
+        await member.send(f'Dear {member}, \nYou were auto-kicked from the server {ctx.guild.name}. Lata bitch')
 
-    else:  # if reason is stated
+    else:  
         await ctx.channel.send(f'{member} was kicked from the server.')
 
-        embed = discord.Embed()
-        ctx.content = f'Dear {member}: \nYou were kicked from the server, ' \
-                      f'{ctx.guild.name}, because: {reason}.'
-        embed.description = ctx.content
-
-        await member.send(embed=embed)
-        # await member.kick(reason=reason)
+        await member.send(f'Dear {member}: \nYou were kicked from the server, ' \
+                      f'{ctx.guild.name}, \n\nReason: {reason}.')
+        await member.kick(reason=reason)
 
 
 @client.command()
@@ -131,14 +137,14 @@ async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none fo
 async def ban(ctx, member: discord.Member, *, reason=None):
     """allows admin users to ban other members while providing reason"""
     if reason is None:  # reason = none handling
-        await ctx.channel.send(f"{member} was banned from the server. Don't be like {member.name}")  # declares user was
-        # banned in text channel
+
+        # declares user was banned in text channel
+        await ctx.channel.send(f"{member} was banned from the server. Don't be like {member.name}")  
 
         none_embed = discord.Embed()
-        ctx.content = f'Dear {member}, \n you recently used an unacceptable word or did some dumb shit' \
+        ctx.content = (f'Dear {member}, \n Recently, you used an unacceptable word or did some dumb shit' \
                       f' in the server {ctx.guild.name}.' \
-                      f' Due to this infraction, you have been banned. Rest in pieces, {member}. Such a woefully ' \
-                      f'short life.'
+                      f' Due to this infraction, you have been banned. Rip broh')
         none_embed.description = ctx.content
         await member.send(embed=none_embed)
 
@@ -149,23 +155,26 @@ async def ban(ctx, member: discord.Member, *, reason=None):
                       f'\n {reason}'
         embed.description = ctx.content
         await member.send(embed=embed)
-        #  await member.ban(reason=reason)
+        await member.ban(reason=reason)
 
-
-
-
-ident = client.get_guild(server_id)
-client.run(token)
 
 # @client.command()
-# async def clear2(ctx, amount=5000):
+# async def ban(ctx, member: discord.Member, *, reason=None):  # reason = none for easy banning; no context
+#     await member.ban(reason=reason)
+
+# @client.command()
+# async def purge(ctx, amount=5000):
 #     """clears all links and images"""
 #     my_channel = ctx.message.channel
 #     messages = []
-#     for message in client.history(my_channel, limit=int(amount)):
+#     for message in ctx.history(my_channel, limit=int(amount)):
 #         messages.append(message)
 #     await ctx.message.delete(messages)
 #     await ctx.my_channel.send('Bad links and images deleted!')
+
+ident = client.get_guild(616811413268070415)
+client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XYmYYA.WPMzFDoqcXMBp-STF2ZvzMd3hL4')
+
 
 
 # @client.event
