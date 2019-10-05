@@ -4,14 +4,14 @@
 async def ban(ctx, member: discord.Member, *, reason=None):
     """allows admin users to ban other members while providing reason"""
     if reason is None:  # reason = none handling
-        await ctx.channel.send(f"{member} was banned from the server. Don't be like {member.name}")  # declares user was
-        # banned in text channel
+
+        # declares user was banned in text channel
+        await ctx.channel.send(f"{member} was banned from the server. Don't be like {member.name}")  
 
         none_embed = discord.Embed()
-        ctx.content = f'Dear {member}, \n you recently used an unacceptable word or did some dumb shit' \
+        ctx.content = (f'Dear {member}, \n Recently, you used an unacceptable word or did some dumb shit' \
                       f' in the server {ctx.guild.name}.' \
-                      f' Due to this infraction, you have been banned. Rest in pieces, {member}. Such a woefully ' \
-                      f'short life.'
+                      f' Due to this infraction, you have been banned. Rip broh')
         none_embed.description = ctx.content
         await member.send(embed=none_embed)
 
