@@ -1,6 +1,7 @@
 @client.command()
-@commands.has_role(role)
-async def create_text_channel(ctx, name):
-    """allows user to create channels on the discord server"""
+@commands.has_role("Admin")
+async def create(ctx, name):
+    """allows user to create text channels on the discord server"""
     guild = ctx.message.guild
     await guild.create_text_channel(name)
+    await ctx.send('I created a text channel with the name: ' + name)
