@@ -52,8 +52,8 @@ async def on_message_delete(message):
     else:
         embed.description = 'No message content'
 
-    
-    if 'nigger' in message.content:
+    bad_word = ''
+    if bad_word in message.content:
         await bad_send.send(embed=embed)
     else: 
         await regular_send.send(embed=embed)
