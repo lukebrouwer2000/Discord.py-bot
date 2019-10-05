@@ -5,18 +5,12 @@ async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none fo
     """allows admin users to kick other members while providing reason"""
     # reason = none exception handling
     if reason is None:  
-        none_embed = discord.Embed()
-        ctx.content = f'Dear {member}, \n You were kicked from the server {ctx.guild.name} because ...'
-        none_embed.description = ctx.content
-        await member.send(embed=none_embed)
+        
+        await member.send(f'Dear {member}, \nYou were kicked from the server {ctx.guild.name}. Lata bitch')
 
     else:  
         await ctx.channel.send(f'{member} was kicked from the server.')
 
-        embed = discord.Embed()
-        ctx.content = f'Dear {member}: \nYou were kicked from the server, ' \
-                      f'{ctx.guild.name}, because: {reason}.'
-        embed.description = ctx.content
-
-        await member.send(embed=embed)
+        await member.send(f'Dear {member}: \nYou were kicked from the server, ' \
+                      f'{ctx.guild.name}, \n\nReason: {reason}.')
         await member.kick(reason=reason)
