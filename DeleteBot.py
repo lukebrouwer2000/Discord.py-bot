@@ -2,11 +2,11 @@ import discord
 import os
 from discord.ext import commands
 import time
-import asyncio
-import random
-import schedule
+from datetime import date
 
 client = commands.Bot(command_prefix="!")
+
+
 
 
 @client.event
@@ -37,11 +37,13 @@ async def on_member_remove(member):
 @client.event
 async def on_message_delete(message):
     """creates an embed when a message is deleted in the channel"""
-    
+
+    bad_send = client.get_channel(628755221266563072)
+    regular_send = client.get_channel(628758306042675200)
+
     embed = discord.Embed()
     embed.set_author(name=message.author, icon_url=message.author.avatar_url)  
     embed.description = message.content  
-
     embed.set_footer(text=f'Message seen in {message.guild.name} in {message.channel.name} | '
                         f"\nYou've been caught by Vive bot")
 
@@ -50,13 +52,17 @@ async def on_message_delete(message):
     else:
         embed.description = 'No message content'
 
-    await message.channel.send(embed=embed)
+    
+    if 'nigger' in message.content:
+        await bad_send.send(embed=embed)
+    else: 
+        await regular_send.send(embed=embed)
 
 
 
 @client.command()
 @commands.has_role("Admin")
-async def ctc(ctx, name):
+async def create(ctx, name):
     """allows user to create text channels on the discord server"""
     guild = ctx.message.guild
     await guild.create_text_channel(name)
@@ -68,6 +74,8 @@ async def delete(ctx, reason=None):
     """allows admin user to delete channels on the discord server"""
 
     channel = ctx.channel
+    channel_send = client.get_channel(616811413847146498)
+    await channel_send.send(f'I deleted the channel {ctx.channel}')
     await channel.delete(reason=reason) 
 
 class MemberRoles(commands.MemberConverter):
@@ -96,14 +104,20 @@ async def ping(ctx):
 @commands.is_owner()
 async def clear(ctx, amount=5000): # default value set to 5k automatically
     """clears all messages in chat based on amount=value"""
+    channel_send = client.get_channel(628749903220310016)
     allowable_channels = ["general", "todo", "development"]
+
+    today = date.today()
+
+    day = today.strftime("%B %d, %Y")
+
     if str(ctx.channel) in allowable_channels:
         start_time = time.time()
         purge_count = await ctx.channel.purge(limit=amount)
         end_time = time.time()
 
-        await ctx.channel.send(f'Deleted {len(purge_count)} messages in channel {ctx.channel.mention}')
-        await ctx.channel.send(f'Purge took {(end_time - start_time):0.2f} seconds')  # execution time rounded to 2 places, works w/ float
+        await channel_send.send(f'Scheduled purge deleted {len(purge_count)} messages in channel {ctx.channel.mention}. \nPurge took {(end_time - start_time):0.2f} seconds. \nToday\'s date: {day}')
+        
         message = await ctx.channel.send("While this channel is labeled as NSFW breaking discord's Terms of Services (<https://discordapp.com/terms>) will not be allowed.")
         await message.pin()
 
@@ -121,7 +135,7 @@ async def kick(ctx, member: discord.Member, *, reason=None):  # reason = none fo
     # reason = none exception handling
     if reason is None:  
         
-        await member.send(f'Dear {member}, \nYou were auto-kicked from the server {ctx.guild.name}. Lata bitch')
+        await member.send(f'Dear {member}, \nYou were kicked from the server {ctx.guild.name}. Lata bitch')
 
     else:  
         await ctx.channel.send(f'{member} was kicked from the server.')
@@ -173,7 +187,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 #     await ctx.my_channel.send('Bad links and images deleted!')
 
 ident = client.get_guild(616811413268070415)
-client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XYmYYA.WPMzFDoqcXMBp-STF2ZvzMd3hL4')
+client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XZPs0A.v_tBLen3s-yHJ501O6mtM4pzhXo')
 
 
 
