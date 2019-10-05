@@ -187,7 +187,7 @@ async def ban(ctx, member: discord.Member, *, reason=None):
 #     await ctx.my_channel.send('Bad links and images deleted!')
 
 ident = client.get_guild(616811413268070415)
-client.run('NjE3MTIwNDkxMDUxOTQxOTI4.XZPs0A.v_tBLen3s-yHJ501O6mtM4pzhXo')
+client.run('')
 
 
 
