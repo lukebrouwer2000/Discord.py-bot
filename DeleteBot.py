@@ -156,9 +156,9 @@ async def ban(ctx, member: discord.Member, *, reason=None):
         await ctx.channel.send(f"{member} was banned from the server. Don't be like {member.name}")  
 
         none_embed = discord.Embed()
-        ctx.content = (f'Dear {member}, \n Recently, you used an unacceptable word or did some dumb shit' \
+        ctx.content = (f'Dear {member}, \n Recently, you used an unacceptable word' \
                       f' in the server {ctx.guild.name}.' \
-                      f' Due to this infraction, you have been banned. Rip broh')
+                      f' Due to this infraction, you have been banned.\n')
         none_embed.description = ctx.content
         await member.send(embed=none_embed)
 
